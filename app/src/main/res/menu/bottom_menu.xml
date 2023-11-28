@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="Home"/>
+    <item
+        android:id="@+id/bottom_recipes"
+        android:icon="@drawable/baseline_food_bank_24"
+        android:title="Recipes"/>
+    <item
+        android:id="@+id/bottom_addRecipe"
+        android:icon="@drawable/baseline_add_circle_24"
+        android:title="Add"/>
+    <item
+        android:id="@+id/bottom_convert"
+        android:icon="@drawable/baseline_sync_alt_24"
+        android:title="Convert"/>
+    <item
+        android:id="@+id/bottom_account"
+        android:icon="@drawable/baseline_account_circle_24"
+        android:title="Account"/>
+
+</menu>
