@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerview;
     private RVARecipe rvaRecipe;
 
-    private ArrayList<String> recipes;
+    private ArrayList<RecipeModel> recipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +24,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        recipes = new ArrayList<String>();
+        recipes = new ArrayList<RecipeModel>();
         //Recipes
         for(int i = 0; i < 20; i++) {
-            recipes.add("Test");
+            recipes.add(new RecipeModel("bibimbap", "korean recipe", "meat", "Cook", "Nothing"));
         }
 
         recyclerview = findViewById(R.id.rvRecipes);

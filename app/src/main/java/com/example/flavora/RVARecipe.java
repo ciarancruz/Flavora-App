@@ -9,46 +9,36 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class RVARecipe extends RecyclerView.Adapter<RVARecipe.ViewHolder> {
 
-    private ArrayList<String> localDataSet;
+    private ArrayList<RecipeModel> localDataSet;
 
-
-    public RVARecipe(ArrayList<String> data) {
+    // Getting Data from
+    public RVARecipe(ArrayList<RecipeModel> data) {
         this.localDataSet = data;
-//        localDataSet.add("hello");
-//        localDataSet.add("bye");
     }
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder)
-     */
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        private  TextView textView;
+        private TextView recipeName, description;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             //Define click listener for the ViewHolder's View
-            this.textView =  (TextView) itemView.findViewById(R.id.item_name);
-
+            recipeName =  (TextView) itemView.findViewById(R.id.item_name);
+            description = (TextView) itemView.findViewById(R.id.item_description);
         }
 
-        //GETTERS
-        public TextView getTextView() {
-            return textView;
-        }
-        //SETTERS
-        public void setTextView(TextView textView) {
-            this.textView = textView;
-        }
+//        public TextView getTextView() {
+//            return textView;
+//        }
+//        public void setTextView(TextView textView) {
+//            this.textView = textView;
+//        }
     }
-
-//    public void CustomAdapter(String[] dataSet) {
-//        localDataSet = dataSet;
-//    }
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -65,7 +55,8 @@ public class RVARecipe extends RecyclerView.Adapter<RVARecipe.ViewHolder> {
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTextView().setText(localDataSet.get(position));
+        viewHolder.recipeName.setText(localDataSet.get(position).recipeName);
+        viewHolder.description.setText(localDataSet.get(position).description);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

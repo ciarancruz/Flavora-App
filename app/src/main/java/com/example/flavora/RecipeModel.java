@@ -9,9 +9,11 @@ public class RecipeModel {
         this.notes = notes;
     }
 
-    private String recipeName;
-    private String description;
-    private String ingredients;
-    private String instructions;
-    private String notes;
+    String recipeName;
+    String description;
+    String ingredients;
+    String instructions;
+    String notes;
+
+
 }
