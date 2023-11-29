@@ -1,22 +1,46 @@
 package com.example.flavora;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerview;
+    private RVARecipe rvaRecipe;
+
+    private ArrayList<String> recipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        recipes = new ArrayList<String>();
+        //Recipes
+        for(int i = 0; i < 20; i++) {
+            recipes.add("Test");
+        }
+
+        recyclerview = findViewById(R.id.rvRecipes);
+        rvaRecipe = new RVARecipe(recipes);
+        recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        recyclerview.setAdapter(rvaRecipe);
+
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_home);
 
+
+        // Navigation Bar
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.bottom_home) {
@@ -44,5 +68,8 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+
+
+
     }
 }

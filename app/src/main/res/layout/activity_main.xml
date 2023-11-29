@@ -15,9 +15,7 @@
         android:textColor="@color/blue_grotto"
         android:layout_centerInParent="true"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -34,6 +32,10 @@
         app:itemActiveIndicatorStyle="@color/white"
         app:labelVisibilityMode="unlabeled"/>
 
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRecipes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="58dp"/>
 
 </RelativeLayout>
