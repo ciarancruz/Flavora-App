@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         recipes = new ArrayList<RecipeModel>();
         //Recipes
         for(int i = 0; i < 20; i++) {
-            recipes.add(new RecipeModel("bibimbap", "korean recipe", "meat", "Cook", "Nothing"));
+            recipes.add(new RecipeModel("Korean Dish", "Korean Recipe", "meat", "Cook", "Nothing"));
         }
 
         recyclerview = findViewById(R.id.rvRecipes);
