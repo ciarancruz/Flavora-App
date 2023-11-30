@@ -41,4 +41,12 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
 
+    // Room
+    implementation ("androidx.room:room-runtime:2.2.5")
+    annotationProcessor ("androidx.room:room-compiler:2.2.5")
+    implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    annotationProcessor ("androidx.lifecycle:lifecycle-compiler:2.2.0")
+
+
+
 }
