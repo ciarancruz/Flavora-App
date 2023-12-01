@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Variable for recycler view
         recipesRV = findViewById(R.id.rvRecipes);
-        FloatingActionButton fab = findViewById(R.id.idFABAdd);
 
 
         // Navigation Bar
@@ -72,38 +71,24 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        // adding on click listener for floating action button.
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // starting a new activity for adding a new course
-                // and passing a constant value in it.
-                Intent intent = new Intent(MainActivity.this, AddRecipeActivity.class);
-                startActivityForResult(intent, ADD_RECIPE_REQUEST);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            }
-        });
 
-
+        // ROOM Code from GeeksForGeeks (MSD Lab 6)
         recipesRV.setLayoutManager(new LinearLayoutManager(this));
         recipesRV.setHasFixedSize(true);
 
         final RVARecipe adapter = new RVARecipe();
-
         recipesRV.setAdapter(adapter);
-
         viewmodal = new ViewModelProvider(this).get(ViewModal.class);
 
+        // Observe changes in Recipe Model
         viewmodal.getAllRecipes().observe(this, new Observer<List<RecipeModel>>() {
             @Override
             public void onChanged(List<RecipeModel> models) {
-                // when the data is changed in our models we are
-                // adding that list to our adapter class.
                 adapter.submitList(models);
             }
         });
 
-        // TEMPORARY METHOD FOR DELETING DATA
+        // Deleting Recipes
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -138,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
