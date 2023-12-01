@@ -51,5 +51,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata:2.6.2")
 
+    // Java language implementation
+    implementation ("androidx.fragment:fragment:1.6.2")
+
+
+
 
 }
