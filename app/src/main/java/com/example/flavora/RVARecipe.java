@@ -4,43 +4,46 @@ package com.example.flavora;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+
 
 import java.util.ArrayList;
 
-public class RVARecipe extends RecyclerView.Adapter<RVARecipe.ViewHolder> {
+public class RVARecipe extends ListAdapter<RecipeModel, RVARecipe.ViewHolder> {
 
-    private ArrayList<RecipeModel> localDataSet;
+    private static OnItemClickListener listener;
 
-    // Getting Data from
-    public RVARecipe(ArrayList<RecipeModel> data) {
-        this.localDataSet = data;
+    public RVARecipe() {
+        super(DIFF_CALLBACK);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView recipeName, description;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            //Define click listener for the ViewHolder's View
-            recipeName =  (TextView) itemView.findViewById(R.id.item_name);
-            description = (TextView) itemView.findViewById(R.id.item_description);
+    private static final DiffUtil.ItemCallback<RecipeModel> DIFF_CALLBACK = new DiffUtil.ItemCallback<RecipeModel>() {
+        @Override
+        public boolean areItemsTheSame(RecipeModel oldItem, RecipeModel newItem) {
+            return oldItem.getId() == newItem.getId();
         }
 
-//        public TextView getTextView() {
-//            return textView;
-//        }
-//        public void setTextView(TextView textView) {
-//            this.textView = textView;
-//        }
-    }
+        @Override
+        public boolean areContentsTheSame(RecipeModel oldItem, RecipeModel newItem) {
+            // below line is to check the course name, description and course duration.
+            return oldItem.getRecipeName().equals(newItem.getRecipeName()) &&
+                    oldItem.getDescription().equals(newItem.getDescription());
+        }
+    };
+
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //Create a new view, which defines the Ui of the list item
@@ -55,15 +58,50 @@ public class RVARecipe extends RecyclerView.Adapter<RVARecipe.ViewHolder> {
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.recipeName.setText(localDataSet.get(position).recipeName);
-        viewHolder.description.setText(localDataSet.get(position).description);
+        RecipeModel model = getRecipeAt(position);
+        viewHolder.recipeName.setText(model.getRecipeName());
+        viewHolder.description.setText(model.getDescription());
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-        return localDataSet.size();
+    public RecipeModel getRecipeAt(int position) {
+        return getItem(position);
     }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        TextView recipeName, description;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            recipeName =  itemView.findViewById(R.id.item_name);
+            description = itemView.findViewById(R.id.item_description);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // inside on click listener we are passing
+                    // position to our item of recycler view.
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(getItem(position));
+                    }
+                }
+            });
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(RecipeModel model);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+//    // Return the size of your dataset (invoked by the layout manager)
+//    @Override
+//    public int getItemCount() {
+//        return localDataSet.size();
+//    }
 }
 
 

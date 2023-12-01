@@ -40,13 +40,16 @@ dependencies {
     // Recycler View
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
+    implementation ("androidx.cardview:cardview:1.0.0")
 
     // Room
-    implementation ("androidx.room:room-runtime:2.2.5")
-    annotationProcessor ("androidx.room:room-compiler:2.2.5")
+    implementation ("androidx.room:room-runtime:2.6.1")
+    annotationProcessor ("androidx.room:room-compiler:2.6.1")
     implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    annotationProcessor ("androidx.lifecycle:lifecycle-compiler:2.2.0")
-
+    //noinspection LifecycleAnnotationProcessorWithJava8
+    annotationProcessor ("androidx.lifecycle:lifecycle-compiler:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata:2.6.2")
 
 
 }
