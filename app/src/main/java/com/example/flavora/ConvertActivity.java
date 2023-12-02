@@ -68,6 +68,7 @@ public class ConvertActivity extends AppCompatActivity {
         }
         else {
             Toast.makeText(this, "Recipe not saved", Toast.LENGTH_SHORT).show();
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
     }
 }

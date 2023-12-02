@@ -142,8 +142,10 @@ public class MainActivity extends AppCompatActivity {
             model.setId(id);
             viewmodal.update(model);
             Toast.makeText(this, "Recipe updated", Toast.LENGTH_SHORT).show();
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         } else {
             Toast.makeText(this, "Recipe not saved", Toast.LENGTH_SHORT).show();
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
     }
 }
