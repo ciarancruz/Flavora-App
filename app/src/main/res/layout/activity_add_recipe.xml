@@ -9,19 +9,13 @@
 
 
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bottomNavigationView"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/bottom_background"
-        android:elevation="2dp"
-        app:menu="@menu/bottom_menu"
-        app:itemIconSize="30dp"
-        app:itemIconTint="@drawable/item_selector"
-        app:itemRippleColor="@android:color/transparent"
-        app:itemActiveIndicatorStyle="@color/white"
-        app:labelVisibilityMode="unlabeled"/>
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/bottomNavigationView"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:elevation="2dp"-->
+<!--        app:labelVisibilityMode="unlabeled"/>-->
 
     <EditText
         android:id="@+id/inputRecipe"

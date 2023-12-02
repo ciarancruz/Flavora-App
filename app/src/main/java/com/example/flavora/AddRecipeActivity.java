@@ -54,11 +54,6 @@ public class AddRecipeActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
                 return true;
-            } else if (itemId == R.id.bottom_account) {
-                startActivity(new Intent(getApplicationContext(), AccountActivity.class));
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
-                return true;
             }
             return false;
         });
