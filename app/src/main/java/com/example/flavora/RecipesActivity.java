@@ -29,7 +29,6 @@ public class RecipesActivity extends AppCompatActivity {
             } else if (itemId == R.id.bottom_addRecipe) {
                 startActivity(new Intent(getApplicationContext(), AddRecipeActivity.class));
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
                 return true;
             } else if (itemId == R.id.bottom_convert) {
                 startActivity(new Intent(getApplicationContext(), ConvertActivity.class));

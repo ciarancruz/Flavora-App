@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Variable for recycler view
         recipesRV = findViewById(R.id.rvRecipes);
-
 
         // Navigation Bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         recipesRV.setAdapter(adapter);
         viewmodal = new ViewModelProvider(this).get(ViewModal.class);
 
+
         // Observe changes in Recipe Model
         viewmodal.getAllRecipes().observe(this, new Observer<List<RecipeModel>>() {
             @Override
@@ -98,8 +99,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).attachToRecyclerView(recipesRV);
 
-        // below line is use to attach this to recycler view.
-        // below line is use to set item click listener for our item of recycler view.
+        // Editing Recipe
         adapter.setOnItemClickListener(new RVARecipe.OnItemClickListener() {
             @Override
             public void onItemClick(RecipeModel model) {

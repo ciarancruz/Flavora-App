@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,32 +32,33 @@ public class AddRecipeActivity extends AppCompatActivity {
         descriptionEdt = findViewById(R.id.inputDescription);
         addRecipeBtn = findViewById(R.id.addRecipe);
 
-        // Navigation Menu
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_addRecipe);
 
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.bottom_home) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
-                return true;
-            } else if (itemId == R.id.bottom_recipes) {
-                startActivity(new Intent(getApplicationContext(), RecipesActivity.class));
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
-                return true;
-            } else if (itemId == R.id.bottom_addRecipe) {
-                return true;
-            } else if (itemId == R.id.bottom_convert) {
-                startActivity(new Intent(getApplicationContext(), ConvertActivity.class));
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
-                return true;
-            }
-            return false;
-        });
+//        // Navigation Menu
+//        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+//        bottomNavigationView.setSelectedItemId(R.id.bottom_addRecipe);
+//
+//        bottomNavigationView.setOnItemSelectedListener(item -> {
+//            int itemId = item.getItemId();
+//            if (itemId == R.id.bottom_home) {
+//                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//                finish();
+//                return true;
+//            } else if (itemId == R.id.bottom_recipes) {
+//                startActivity(new Intent(getApplicationContext(), RecipesActivity.class));
+//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//                finish();
+//                return true;
+//            } else if (itemId == R.id.bottom_addRecipe) {
+//                return true;
+//            } else if (itemId == R.id.bottom_convert) {
+//                startActivity(new Intent(getApplicationContext(), ConvertActivity.class));
+//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//                finish();
+//                return true;
+//            }
+//            return false;
+//        });
 
         // Getting data via an intent
         Intent intent = getIntent();
@@ -103,7 +105,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         // at last we are setting result as data.
         setResult(RESULT_OK, data);
-
+        Log.d("Flavora", "Result code OK added: ");
         // displaying a toast message after adding the data
         Toast.makeText(this, "Recipe Added to Database. ", Toast.LENGTH_SHORT).show();
     }
