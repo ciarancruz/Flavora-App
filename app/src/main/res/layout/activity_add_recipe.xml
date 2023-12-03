@@ -63,11 +63,49 @@
             android:layout_marginTop="10dp"/>
 
         <LinearLayout
+            android:id="@+id/photoButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/inputInstructions"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true">
+
+            <Button
+                android:id="@+id/takePhoto"
+                android:text="Take A Photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/navy_blue"
+                android:layout_marginRight="10dp"/>
+
+            <Button
+                android:id="@+id/pickPhoto"
+                android:text="Pick A Photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/navy_blue"
+                android:layout_marginLeft="10dp"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/photoButtons"
+            android:id="@+id/inputImage"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/baseline_broken_image_24" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/inputInstructions"
+            android:layout_below="@id/inputImage"
             android:layout_marginTop="20dp">
 
             <Button
