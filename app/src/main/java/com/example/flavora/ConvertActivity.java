@@ -58,7 +58,9 @@ public class ConvertActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             String recipeName = data.getStringExtra(AddRecipeActivity.EXTRA_RECIPE_NAME);
             String recipeDescription = data.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION);
-            RecipeModel model = new RecipeModel(recipeName, recipeDescription);
+            String recipeIngredients = data.getStringExtra(AddRecipeActivity.EXTRA_INGREDIENTS);
+            String recipeInstructions = data.getStringExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS);
+            RecipeModel model = new RecipeModel(recipeName, recipeDescription, recipeIngredients, recipeInstructions);
             viewmodal.insert(model);
             Toast.makeText(this, "Recipe saved", Toast.LENGTH_SHORT).show();
 
