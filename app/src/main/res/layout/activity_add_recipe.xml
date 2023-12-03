@@ -1,60 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context=".AddRecipeActivity">
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    <EditText
-        android:id="@+id/inputRecipe"
-        android:hint="Recipe Name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="50dp"/>
 
-    <EditText
-        android:layout_below="@+id/inputRecipe"
-        android:id="@+id/inputDescription"
-        android:hint="Description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"/>
+        <EditText
+            android:id="@+id/inputRecipe"
+            android:hint="Recipe Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="50dp"/>
 
-    <EditText
-        android:layout_below="@+id/inputDescription"
-        android:id="@+id/inputIngredients"
-        android:hint="Ingredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"/>
+        <EditText
+            android:layout_below="@+id/inputRecipe"
+            android:id="@+id/inputDescription"
+            android:hint="Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/inputIngredients"
-        android:layout_marginTop="20dp">
+        <EditText
+            android:layout_below="@+id/inputDescription"
+            android:id="@+id/inputIngredients"
+            android:hint="Ingredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"/>
 
-        <Button
-            android:id="@+id/addRecipe"
-            android:text="Add Recipe"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/inputIngredients"
+            android:layout_marginTop="20dp">
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/addRecipe"
+                android:text="Add Recipe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/navy_blue"/>
 
+        </LinearLayout>
 
+    </RelativeLayout>
 
-
-
-</RelativeLayout>
+</ScrollView>
