@@ -104,15 +104,15 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     }
 
+    // Taking a photo
     public void takePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Log.i("Flavora", "entered takephoto");
         if (intent.resolveActivity(getPackageManager()) != null) {
-            Log.i("Flavora", "entered if statement in image");
             startActivityForResult(intent, CAMERA_REQUEST);
         }
     }
 
+    // Picking a photo from gallery
     public void openGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -145,7 +145,6 @@ public class AddRecipeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK) {
             try {
                 Uri selectedImage = data.getData();
