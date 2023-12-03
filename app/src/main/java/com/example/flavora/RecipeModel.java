@@ -42,9 +42,10 @@ public class RecipeModel {
         this.notes = notes;
     }
 
-    public RecipeModel(String recipeName, String description) {
+    public RecipeModel(String recipeName, String description, String ingredients) {
         this.recipeName = recipeName;
         this.description = description;
+        this.ingredients = ingredients;
     }
 
     public int getId() {

@@ -55,7 +55,8 @@ public class RecipesActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             String recipeName = data.getStringExtra(AddRecipeActivity.EXTRA_RECIPE_NAME);
             String recipeDescription = data.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION);
-            RecipeModel model = new RecipeModel(recipeName, recipeDescription);
+            String recipeIngredients = data.getStringExtra(AddRecipeActivity.EXTRA_INGREDIENTS);
+            RecipeModel model = new RecipeModel(recipeName, recipeDescription, recipeIngredients);
             viewmodal.insert(model);
             Toast.makeText(this, "Recipe saved", Toast.LENGTH_SHORT).show();
 
