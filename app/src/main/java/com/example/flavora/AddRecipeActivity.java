@@ -15,7 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class AddRecipeActivity extends AppCompatActivity {
 
     // Variables for input
-    private EditText recipeNameEdt, descriptionEdt, ingredientsEdt;
+    private EditText recipeNameEdt, descriptionEdt, ingredientsEdt, instructionsEdt;
     private Button addRecipeBtn;
 
     // GeekForGeeks Code (MSD Lab 6)
@@ -23,6 +23,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     public static final String EXTRA_RECIPE_NAME = "EXTRA_RECIPE";
     public static final String EXTRA_DESCRIPTION = "EXTRA_RECIPE_DESCRIPTION";
     public static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
+    public static final String EXTRA_INSTRUCTIONS = "EXTRA_INSTRUCTIONS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         recipeNameEdt = findViewById(R.id.inputRecipe);
         descriptionEdt = findViewById(R.id.inputDescription);
         ingredientsEdt = findViewById(R.id.inputIngredients);
+        instructionsEdt = findViewById(R.id.inputInstructions);
         addRecipeBtn = findViewById(R.id.addRecipe);
 
 
@@ -44,6 +46,7 @@ public class AddRecipeActivity extends AppCompatActivity {
             recipeNameEdt.setText(intent.getStringExtra(EXTRA_RECIPE_NAME));
             descriptionEdt.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
             ingredientsEdt.setText(intent.getStringExtra(EXTRA_INGREDIENTS));
+            instructionsEdt.setText(intent.getStringExtra(EXTRA_INSTRUCTIONS));
         }
 
         addRecipeBtn.setOnClickListener(new View.OnClickListener() {
@@ -54,12 +57,13 @@ public class AddRecipeActivity extends AppCompatActivity {
                 String recipeName = recipeNameEdt.getText().toString();
                 String description = descriptionEdt.getText().toString();
                 String ingredients = ingredientsEdt.getText().toString();
-                if (recipeName.isEmpty() || description.isEmpty() || ingredients.isEmpty()) {
+                String instructions = instructionsEdt.getText().toString();
+                if (recipeName.isEmpty() || description.isEmpty() || ingredients.isEmpty() || instructions.isEmpty()) {
                     Toast.makeText(AddRecipeActivity.this, "Please enter valid recipe details.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // Calling a method to save recipe
-                saveRecipe(recipeName, description, ingredients);
+                saveRecipe(recipeName, description, ingredients, instructions);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
             }
@@ -67,7 +71,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     }
 
-    private void saveRecipe(String recipeName, String description, String ingredients) {
+    private void saveRecipe(String recipeName, String description, String ingredients, String instructions) {
         // inside this method we are passing
         // all the data via an intent.
         Intent data = new Intent();
@@ -76,6 +80,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         data.putExtra(EXTRA_RECIPE_NAME, recipeName);
         data.putExtra(EXTRA_DESCRIPTION, description);
         data.putExtra(EXTRA_INGREDIENTS, ingredients);
+        data.putExtra(EXTRA_INSTRUCTIONS, instructions);
         int id = getIntent().getIntExtra(EXTRA_ID, -1);
         if (id != -1) {
             // in below line we are passing our id.

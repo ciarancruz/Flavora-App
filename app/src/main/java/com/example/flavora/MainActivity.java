@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(AddRecipeActivity.EXTRA_RECIPE_NAME, model.getRecipeName());
                 intent.putExtra(AddRecipeActivity.EXTRA_DESCRIPTION, model.getDescription());
                 intent.putExtra(AddRecipeActivity.EXTRA_INGREDIENTS, model.getIngredients());
+                intent.putExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS, model.getInstructions());
 
                 // below line is to start a new activity and
                 // adding a edit course constant.
@@ -128,7 +129,8 @@ public class MainActivity extends AppCompatActivity {
             String recipeName = data.getStringExtra(AddRecipeActivity.EXTRA_RECIPE_NAME);
             String recipeDescription = data.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION);
             String recipeIngredients = data.getStringExtra(AddRecipeActivity.EXTRA_INGREDIENTS);
-            RecipeModel model = new RecipeModel(recipeName, recipeDescription, recipeIngredients);
+            String recipeInstructions = data.getStringExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS);
+            RecipeModel model = new RecipeModel(recipeName, recipeDescription, recipeIngredients, recipeInstructions);
             viewmodal.insert(model);
             Toast.makeText(this, "Recipe saved", Toast.LENGTH_SHORT).show();
 
@@ -141,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
             String recipeName = data.getStringExtra(AddRecipeActivity.EXTRA_RECIPE_NAME);
             String recipeDescription = data.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION);
             String recipeIngredients = data.getStringExtra(AddRecipeActivity.EXTRA_INGREDIENTS);
-            RecipeModel model = new RecipeModel(recipeName, recipeDescription, recipeIngredients);
+            String recipeInstructions = data.getStringExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS);
+            RecipeModel model = new RecipeModel(recipeName, recipeDescription, recipeIngredients, recipeInstructions);
             model.setId(id);
             viewmodal.update(model);
             Toast.makeText(this, "Recipe updated", Toast.LENGTH_SHORT).show();
