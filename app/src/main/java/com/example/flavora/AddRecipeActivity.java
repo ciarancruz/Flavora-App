@@ -36,6 +36,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     public static final String EXTRA_DESCRIPTION = "EXTRA_RECIPE_DESCRIPTION";
     public static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
     public static final String EXTRA_INSTRUCTIONS = "EXTRA_INSTRUCTIONS";
+
     public static final int IMAGE_REQUEST = 100;
     public static final int CAMERA_REQUEST = 200;
 
@@ -149,7 +150,8 @@ public class AddRecipeActivity extends AppCompatActivity {
             try {
                 Uri selectedImage = data.getData();
                 InputStream imageStream = getContentResolver().openInputStream(selectedImage);
-                imageEdt.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+                Bitmap image = BitmapFactory.decodeStream((imageStream));
+                imageEdt.setImageBitmap(image);
             } catch (IOException e) {
                 e.printStackTrace();
             }
