@@ -189,10 +189,10 @@ public class AddRecipeActivity extends AppCompatActivity {
     }
 
     private void bitmapToURI (Bitmap imageBitmap) {
-        File tempFile = new File(getCacheDir(), "temp.png");
+        File tempFile = new File(getCacheDir(), "temp.jpeg");
         try {
                 FileOutputStream fos = new FileOutputStream(tempFile);
-                imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                 fos.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
