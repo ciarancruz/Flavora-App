@@ -4,23 +4,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-//public class RecipeModel {
-//    public RecipeModel(String recipeName, String description, String ingredients, String instructions, String notes) {
-//        this.recipeName = recipeName;
-//        this.description = description;
-//        this.ingredients = ingredients;
-//        this.instructions = instructions;
-//        this.notes = notes;
-//    }
-//
-//    String recipeName;
-//    String description;
-//    String ingredients;
-//    String instructions;
-//    String notes;
-//
-//
-//}
+
 
 @Entity(tableName = "recipe")
 public class RecipeModel {
@@ -31,22 +15,15 @@ public class RecipeModel {
     private String description;
     private String ingredients;
     private String instructions;
-    private String notes;
+    private String imageLink;
 
-    @Ignore
-    public RecipeModel(String recipeName, String description, String ingredients, String instructions, String notes) {
+
+    public RecipeModel(String recipeName, String description, String ingredients, String instructions, String imageLink) {
         this.recipeName = recipeName;
         this.description = description;
         this.ingredients = ingredients;
         this.instructions = instructions;
-        this.notes = notes;
-    }
-
-    public RecipeModel(String recipeName, String description, String ingredients, String instructions) {
-        this.recipeName = recipeName;
-        this.description = description;
-        this.ingredients = ingredients;
-        this.instructions = instructions;
+        this.imageLink = imageLink;
     }
 
     public int getId() {
@@ -79,10 +56,11 @@ public class RecipeModel {
     public void setInstructions(String instructions) {
         this.instructions = instructions;
     }
-    public String getNotes() {
-        return notes;
+    public String getImageLink() {
+        return imageLink;
     }
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
+
 }

@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.flavora"
-        minSdk = 30
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -50,6 +50,7 @@ dependencies {
     annotationProcessor ("androidx.lifecycle:lifecycle-compiler:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata:2.6.2")
+
 
 
 }
