@@ -33,7 +33,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     private EditText recipeNameEdt, descriptionEdt, ingredientsEdt, instructionsEdt;
     private ImageView imageEdt;
     private Button addRecipeBtn, takePhotoBtn, pickPhotoBtn;
-    private String imageLink, cameraLink;
+    private String imageLink = "", cameraLink;
 
     // GeekForGeeks Code (MSD Lab 6)
     public static final String EXTRA_ID = "EXTRA_ID";
@@ -88,8 +88,12 @@ public class AddRecipeActivity extends AppCompatActivity {
                 String instructions = instructionsEdt.getText().toString();
                 String image = imageLink;
                 Log.d("Debug", "" + image);
-                if (recipeName.isEmpty() || description.isEmpty() || ingredients.isEmpty() || instructions.isEmpty()) {
-                    Toast.makeText(AddRecipeActivity.this, "Please enter valid recipe details.", Toast.LENGTH_SHORT).show();
+                if (recipeName.isEmpty() || description.isEmpty() || ingredients.isEmpty() || instructions.isEmpty() ) {
+                    Toast.makeText(AddRecipeActivity.this, "Please enter value in all fields.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (image.isEmpty()) {
+                    Toast.makeText(AddRecipeActivity.this, "Please insert an image.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // Calling a method to save recipe
