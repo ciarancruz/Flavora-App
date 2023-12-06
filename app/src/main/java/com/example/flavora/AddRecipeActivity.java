@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -19,16 +20,20 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.ExecutionException;
 
 public class AddRecipeActivity extends AppCompatActivity {
 
     // Variables for input
     private EditText recipeNameEdt, descriptionEdt, ingredientsEdt, instructionsEdt;
     private ImageView imageEdt;
-    private Button addRecipeBtn, takePhotoBtn, pickPhotoBtn ;
+    private Button addRecipeBtn, takePhotoBtn, pickPhotoBtn;
+    private String imageLink;
 
     // GeekForGeeks Code (MSD Lab 6)
     public static final String EXTRA_ID = "EXTRA_ID";
@@ -36,6 +41,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     public static final String EXTRA_DESCRIPTION = "EXTRA_RECIPE_DESCRIPTION";
     public static final String EXTRA_INGREDIENTS = "EXTRA_INGREDIENTS";
     public static final String EXTRA_INSTRUCTIONS = "EXTRA_INSTRUCTIONS";
+    public static final String EXTRA_IMAGELINK = "EXTRA_IMAGELINK";
 
     public static final int IMAGE_REQUEST = 100;
     public static final int CAMERA_REQUEST = 200;
@@ -57,16 +63,19 @@ public class AddRecipeActivity extends AppCompatActivity {
         pickPhotoBtn = findViewById(R.id.pickPhoto);
 
 
-        // Getting data via an intent
-        Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_ID)) {
-            // if we get id for our data then we are
-            // setting values to our edit text fields.
-            recipeNameEdt.setText(intent.getStringExtra(EXTRA_RECIPE_NAME));
-            descriptionEdt.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
-            ingredientsEdt.setText(intent.getStringExtra(EXTRA_INGREDIENTS));
-            instructionsEdt.setText(intent.getStringExtra(EXTRA_INSTRUCTIONS));
-        }
+//        // Getting data via an intent
+//        Intent intent = getIntent();
+//        if (intent.hasExtra(EXTRA_ID)) {
+//            // if we get id for our data then we are
+//            // setting values to our edit text fields.
+//            recipeNameEdt.setText(intent.getStringExtra(EXTRA_RECIPE_NAME));
+//            descriptionEdt.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
+//            ingredientsEdt.setText(intent.getStringExtra(EXTRA_INGREDIENTS));
+//            instructionsEdt.setText(intent.getStringExtra(EXTRA_INSTRUCTIONS));
+//            String image = intent.getStringExtra(EXTRA_IMAGELINK);
+//            Uri imageLink = Uri.parse(image);
+//            imageEdt.setImageURI(imageLink);
+//        }
 
         addRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,12 +86,14 @@ public class AddRecipeActivity extends AppCompatActivity {
                 String description = descriptionEdt.getText().toString();
                 String ingredients = ingredientsEdt.getText().toString();
                 String instructions = instructionsEdt.getText().toString();
+                String image = imageLink;
+                Log.d("Debug", "" + image);
                 if (recipeName.isEmpty() || description.isEmpty() || ingredients.isEmpty() || instructions.isEmpty()) {
                     Toast.makeText(AddRecipeActivity.this, "Please enter valid recipe details.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // Calling a method to save recipe
-                saveRecipe(recipeName, description, ingredients, instructions);
+                saveRecipe(recipeName, description, ingredients, instructions, image);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
             }
@@ -117,11 +128,11 @@ public class AddRecipeActivity extends AppCompatActivity {
     public void openGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST);
     }
 
-    private void saveRecipe(String recipeName, String description, String ingredients, String instructions) {
+    private void saveRecipe(String recipeName, String description, String ingredients, String instructions, String image) {
         // inside this method we are passing
         // all the data via an intent.
         Intent data = new Intent();
@@ -131,6 +142,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         data.putExtra(EXTRA_DESCRIPTION, description);
         data.putExtra(EXTRA_INGREDIENTS, ingredients);
         data.putExtra(EXTRA_INSTRUCTIONS, instructions);
+        data.putExtra(EXTRA_IMAGELINK, image);
         int id = getIntent().getIntExtra(EXTRA_ID, -1);
         if (id != -1) {
             // in below line we are passing our id.
@@ -143,18 +155,56 @@ public class AddRecipeActivity extends AppCompatActivity {
         Toast.makeText(this, "Recipe Added to Database.", Toast.LENGTH_SHORT).show();
     }
 
+    private void storeImageInDirectory(Uri imageURI) throws IOException {
+        // Get Latest ID from database
+//            Integer latestIndex  = database.getLatestId().get();
+//            if(latestIndex == null) latestIndex = 0;
+
+        // Find root folder for app (com.yourname.appname)
+        String root = getApplication().getExternalFilesDir("").getAbsolutePath();
+        Log.d("Debug", ""+ root);
+//         Create a folder in that root folder
+        File rootDir = new File(root + "/pictures");
+        rootDir.mkdir();
+//
+        Bitmap image = MediaStore.Images.Media.getBitmap(
+                getApplication().getContentResolver(),
+                imageURI
+        );
+//
+        String stringImageId = imageURI.toString();
+        String id = stringImageId.substring(stringImageId.length() - 4 );
+        Log.d("Debug", "Last 4: " + id);
+
+        // Create file to store image
+        File myNewImage = new File(root + "/pictures/recipes_" + id + ".jpeg");
+        Log.d("Debug", "New file: " + myNewImage);
+
+        FileOutputStream out = new FileOutputStream(myNewImage);
+        image.compress(
+                Bitmap.CompressFormat.JPEG,   // FILE FORMAT
+                100,                          // QUALITY OF IMAGE
+                out                           // Storing image location
+        );
+        Log.d("Debug","Out:" + out);
+
+        out.close();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK) {
+            Uri selectedImage = data.getData();
+            imageLink = selectedImage.toString();
+            Log.d("Debug", "Image link saved " + imageLink);
+            imageEdt.setImageURI(selectedImage);
             try {
-                Uri selectedImage = data.getData();
-                InputStream imageStream = getContentResolver().openInputStream(selectedImage);
-                Bitmap image = BitmapFactory.decodeStream((imageStream));
-                imageEdt.setImageBitmap(image);
+                storeImageInDirectory(selectedImage);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
+
         }
 
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {

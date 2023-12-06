@@ -106,12 +106,14 @@ public class MainActivity extends AppCompatActivity {
                 // after clicking on item of recycler view
                 // we are opening a new activity and passing
                 // a data to our activity.
-                Intent intent = new Intent(MainActivity.this, AddRecipeActivity.class);
+                Intent intent = new Intent(MainActivity.this, EditRecipeActivity.class);
                 intent.putExtra(AddRecipeActivity.EXTRA_ID, model.getId());
                 intent.putExtra(AddRecipeActivity.EXTRA_RECIPE_NAME, model.getRecipeName());
                 intent.putExtra(AddRecipeActivity.EXTRA_DESCRIPTION, model.getDescription());
                 intent.putExtra(AddRecipeActivity.EXTRA_INGREDIENTS, model.getIngredients());
                 intent.putExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS, model.getInstructions());
+                intent.putExtra(AddRecipeActivity.EXTRA_IMAGELINK, model.getImageLink());
+                Log.d("Debug", "Opening edit page");
 
                 // below line is to start a new activity and
                 // adding a edit course constant.
@@ -130,7 +132,9 @@ public class MainActivity extends AppCompatActivity {
             String recipeDescription = data.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION);
             String recipeIngredients = data.getStringExtra(AddRecipeActivity.EXTRA_INGREDIENTS);
             String recipeInstructions = data.getStringExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS);
-            RecipeModel model = new RecipeModel(recipeName, recipeDescription, recipeIngredients, recipeInstructions);
+            String recipeImage = data.getStringExtra(AddRecipeActivity.EXTRA_IMAGELINK);
+            Log.d("Debug", "Saved to database "+recipeImage);
+            RecipeModel model = new RecipeModel(recipeName, recipeDescription, recipeIngredients, recipeInstructions, recipeImage);
             viewmodal.insert(model);
             Toast.makeText(this, "Recipe saved", Toast.LENGTH_SHORT).show();
 
@@ -144,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
             String recipeDescription = data.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION);
             String recipeIngredients = data.getStringExtra(AddRecipeActivity.EXTRA_INGREDIENTS);
             String recipeInstructions = data.getStringExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS);
-            RecipeModel model = new RecipeModel(recipeName, recipeDescription, recipeIngredients, recipeInstructions);
+            String recipeImage = data.getStringExtra(AddRecipeActivity.EXTRA_IMAGELINK);
+            RecipeModel model = new RecipeModel(recipeName, recipeDescription, recipeIngredients, recipeInstructions, recipeImage);
             model.setId(id);
             viewmodal.update(model);
             Toast.makeText(this, "Recipe updated", Toast.LENGTH_SHORT).show();
