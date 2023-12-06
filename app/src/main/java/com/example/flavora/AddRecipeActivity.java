@@ -33,7 +33,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     private EditText recipeNameEdt, descriptionEdt, ingredientsEdt, instructionsEdt;
     private ImageView imageEdt;
     private Button addRecipeBtn, takePhotoBtn, pickPhotoBtn;
-    private String imageLink;
+    private String imageLink, cameraLink;
 
     // GeekForGeeks Code (MSD Lab 6)
     public static final String EXTRA_ID = "EXTRA_ID";
@@ -156,24 +156,21 @@ public class AddRecipeActivity extends AppCompatActivity {
     }
 
     private void storeImageInDirectory(Uri imageURI) throws IOException {
-        // Get Latest ID from database
-//            Integer latestIndex  = database.getLatestId().get();
-//            if(latestIndex == null) latestIndex = 0;
-
-        // Find root folder for app (com.yourname.appname)
+        // Find root folder
         String root = getApplication().getExternalFilesDir("").getAbsolutePath();
-        Log.d("Debug", ""+ root);
-//         Create a folder in that root folder
+        Log.d("Debug", "" + root);
+
+        // Create a folder in that root folder
         File rootDir = new File(root + "/pictures");
         rootDir.mkdir();
-//
+
         Bitmap image = MediaStore.Images.Media.getBitmap(
                 getApplication().getContentResolver(),
                 imageURI
         );
-//
+
         String stringImageId = imageURI.toString();
-        String id = stringImageId.substring(stringImageId.length() - 4 );
+        String id = stringImageId.substring(stringImageId.length() - 4);
         Log.d("Debug", "Last 4: " + id);
 
         // Create file to store image
@@ -182,14 +179,33 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         FileOutputStream out = new FileOutputStream(myNewImage);
         image.compress(
-                Bitmap.CompressFormat.JPEG,   // FILE FORMAT
-                100,                          // QUALITY OF IMAGE
-                out                           // Storing image location
+                Bitmap.CompressFormat.JPEG,
+                100,
+                out
         );
-        Log.d("Debug","Out:" + out);
+        Log.d("Debug", "Out:" + out);
 
         out.close();
     }
+
+    private void bitmapToURI (Bitmap imageBitmap) {
+        File tempFile = new File(getCacheDir(), "temp.png");
+        try {
+                FileOutputStream fos = new FileOutputStream(tempFile);
+                imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                fos.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        Uri uri = Uri.fromFile(tempFile);
+        imageLink = uri.toString();
+        try {
+            storeImageInDirectory(uri);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+}
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -207,10 +223,15 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         }
 
+        // Reference: https://developer.android.com/training/camera-deprecated/photobasics
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap image = (Bitmap)extras.get("data");
+            Log.d("Debug", "Image link/path" + image);
             imageEdt.setImageBitmap(image);
+            bitmapToURI(image);
+
         }
+        // End reference
     }
 }

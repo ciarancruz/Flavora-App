@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(AddRecipeActivity.EXTRA_INGREDIENTS, model.getIngredients());
                 intent.putExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS, model.getInstructions());
                 intent.putExtra(AddRecipeActivity.EXTRA_IMAGELINK, model.getImageLink());
-                Log.d("Debug", "Opening edit page");
 
                 // below line is to start a new activity and
                 // adding a edit course constant.
