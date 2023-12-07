@@ -12,12 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="150dp"
         android:layout_centerHorizontal="true">
 
         <EditText
             android:id="@+id/measurement1"
             android:hint="Measurement"
+            android:textSize="20dp"
             android:inputType="numberDecimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -56,17 +57,18 @@
         android:orientation="horizontal"
         android:layout_centerHorizontal="true">
 
-        <EditText
+        <TextView
             android:id="@+id/measurement2"
-            android:hint="Measurement"
-            android:inputType="numberDecimal"
+            android:text="1.2222"
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <Spinner
             android:id="@+id/spinner2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"/>
     </LinearLayout>
 
 

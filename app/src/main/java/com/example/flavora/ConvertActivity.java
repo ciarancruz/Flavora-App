@@ -70,6 +70,8 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
         spinner2.setAdapter(adapter2);
         spinner2.setOnItemSelectedListener(new Measurement2());
 
+
+
     }
 
     // Passing result from addrecipe to main recipe
@@ -94,14 +96,6 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
             Toast.makeText(this, "Recipe not saved", Toast.LENGTH_SHORT).show();
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
     }
 
     class Measurement1 implements AdapterView.OnItemSelectedListener
@@ -131,5 +125,14 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
         public void onNothingSelected(AdapterView<?> parent) {
 
         }
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
     }
 }
