@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     private EditText recipeNameEdt, descriptionEdt, ingredientsEdt, instructionsEdt;
     private ImageView imageEdt;
     private Button addRecipeBtn, takePhotoBtn, pickPhotoBtn;
-    private String imageLink, cameraLink;
+    private String imageLink = "", cameraLink;
 
     // GeekForGeeks Code (MSD Lab 6)
     public static final String EXTRA_ID = "EXTRA_ID";
@@ -63,19 +64,22 @@ public class AddRecipeActivity extends AppCompatActivity {
         pickPhotoBtn = findViewById(R.id.pickPhoto);
 
 
-//        // Getting data via an intent
-//        Intent intent = getIntent();
-//        if (intent.hasExtra(EXTRA_ID)) {
-//            // if we get id for our data then we are
-//            // setting values to our edit text fields.
-//            recipeNameEdt.setText(intent.getStringExtra(EXTRA_RECIPE_NAME));
-//            descriptionEdt.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
-//            ingredientsEdt.setText(intent.getStringExtra(EXTRA_INGREDIENTS));
-//            instructionsEdt.setText(intent.getStringExtra(EXTRA_INSTRUCTIONS));
-//            String image = intent.getStringExtra(EXTRA_IMAGELINK);
-//            Uri imageLink = Uri.parse(image);
-//            imageEdt.setImageURI(imageLink);
-//        }
+        // Getting data via an intent
+        Intent intent = getIntent();
+        if (intent.hasExtra(AddRecipeActivity.EXTRA_ID)) {
+            // if we get id for our data then we are
+            // setting values to our edit text fields.
+            recipeNameEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_RECIPE_NAME));
+            descriptionEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION));
+            ingredientsEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_INGREDIENTS));
+            instructionsEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS));
+
+            String imageLink = intent.getStringExtra(AddRecipeActivity.EXTRA_IMAGELINK);
+            String imageChanged = stringToPath(imageLink);
+            Drawable image = Drawable.createFromPath(imageChanged);
+            imageEdt.setImageDrawable(image);
+        }
+
 
         addRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,8 +92,12 @@ public class AddRecipeActivity extends AppCompatActivity {
                 String instructions = instructionsEdt.getText().toString();
                 String image = imageLink;
                 Log.d("Debug", "" + image);
-                if (recipeName.isEmpty() || description.isEmpty() || ingredients.isEmpty() || instructions.isEmpty()) {
-                    Toast.makeText(AddRecipeActivity.this, "Please enter valid recipe details.", Toast.LENGTH_SHORT).show();
+                if (recipeName.isEmpty() || description.isEmpty() || ingredients.isEmpty() || instructions.isEmpty() ) {
+                    Toast.makeText(AddRecipeActivity.this, "Please enter value in all fields.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (image.isEmpty()) {
+                    Toast.makeText(AddRecipeActivity.this, "Please insert an image.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // Calling a method to save recipe
@@ -114,6 +122,13 @@ public class AddRecipeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public String stringToPath(String imageLink) {
+        String root = getApplication().getExternalFilesDir("").getAbsolutePath();
+        String id = imageLink.substring(imageLink.length() - 4 );
+        String link = root + "/pictures/recipes_" + id + ".jpeg";
+        return link;
     }
 
     // Taking a photo
@@ -151,8 +166,6 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         // at last we are setting result as data.
         setResult(RESULT_OK, data);
-        // Toast Message Displayed
-        Toast.makeText(this, "Recipe Added to Database.", Toast.LENGTH_SHORT).show();
     }
 
     private void storeImageInDirectory(Uri imageURI) throws IOException {
