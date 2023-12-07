@@ -7,11 +7,15 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class ConvertActivity extends AppCompatActivity {
+public class ConvertActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Variables
     private static final int ADD_RECIPE_REQUEST = 1;
@@ -26,6 +30,8 @@ public class ConvertActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_convert);
 
+
+        // Navigation bar
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.bottom_home) {
@@ -48,6 +54,21 @@ public class ConvertActivity extends AppCompatActivity {
             }
             return false;
         });
+
+
+        //Spinner Dropdown
+        Spinner spinner = findViewById(R.id.spinner1);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.measurements, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new Measurement1());
+
+        //Spinner Dropdown 2
+        Spinner spinner2 = findViewById(R.id.spinner2);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.measurements, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner2.setAdapter(adapter2);
+        spinner2.setOnItemSelectedListener(new Measurement2());
 
     }
 
@@ -72,6 +93,43 @@ public class ConvertActivity extends AppCompatActivity {
         else {
             Toast.makeText(this, "Recipe not saved", Toast.LENGTH_SHORT).show();
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
+
+    class Measurement1 implements AdapterView.OnItemSelectedListener
+    {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
+        {
+            String text = parent.getItemAtPosition(position).toString();
+            Toast.makeText(ConvertActivity.this, "Measurement1 selected" + text, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    }
+
+    class Measurement2 implements AdapterView.OnItemSelectedListener
+    {
+        public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
+        {
+            String text = parent.getItemAtPosition(position).toString();
+            Toast.makeText(ConvertActivity.this, "Measurement2 selected" + text, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
         }
     }
 }

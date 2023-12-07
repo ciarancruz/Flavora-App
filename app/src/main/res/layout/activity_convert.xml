@@ -7,13 +7,70 @@
     android:layout_height="match_parent"
     tools:context=".ConvertActivity">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/linear1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Convert"
-        android:textSize="36sp"
-        android:textColor="@color/blue_grotto"
-        android:layout_centerInParent="true"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="200dp"
+        android:layout_centerHorizontal="true">
+
+        <EditText
+            android:id="@+id/measurement1"
+            android:hint="Measurement"
+            android:inputType="numberDecimal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear3"
+        android:layout_below="@id/linear1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/inputImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/convert" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_below="@id/linear3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true">
+
+        <EditText
+            android:id="@+id/measurement2"
+            android:hint="Measurement"
+            android:inputType="numberDecimal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
