@@ -166,8 +166,6 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         // at last we are setting result as data.
         setResult(RESULT_OK, data);
-        // Toast Message Displayed
-        Toast.makeText(this, "Recipe Added to Database.", Toast.LENGTH_SHORT).show();
     }
 
     private void storeImageInDirectory(Uri imageURI) throws IOException {

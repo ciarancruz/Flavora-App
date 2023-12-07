@@ -18,9 +18,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -154,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Recipe updated", Toast.LENGTH_SHORT).show();
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         } else {
-            Toast.makeText(this, "Recipe not saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No changes made", Toast.LENGTH_SHORT).show();
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
     }
