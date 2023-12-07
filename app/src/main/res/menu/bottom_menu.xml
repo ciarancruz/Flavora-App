@@ -17,9 +17,4 @@
         android:id="@+id/bottom_convert"
         android:icon="@drawable/baseline_sync_alt_24"
         android:title="Convert"/>
-    <item
-        android:id="@+id/bottom_account"
-        android:icon="@drawable/baseline_account_circle_24"
-        android:title="Account"/>
-
 </menu>

@@ -5,12 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -19,24 +16,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.ExecutionException;
 
-public class AddRecipeActivity extends AppCompatActivity {
+public class EditRecipeActivity extends AppCompatActivity {
 
-    // Variables for input
     private EditText recipeNameEdt, descriptionEdt, ingredientsEdt, instructionsEdt;
     private ImageView imageEdt;
-    private Button addRecipeBtn, takePhotoBtn, pickPhotoBtn;
-    private String imageLink = "", cameraLink;
+    private Button editAddRecipeBtn, editTakePhotoBtn, editPickPhotoBtn;
+    private String imageLink;
 
-    // GeekForGeeks Code (MSD Lab 6)
     public static final String EXTRA_ID = "EXTRA_ID";
     public static final String EXTRA_RECIPE_NAME = "EXTRA_RECIPE";
     public static final String EXTRA_DESCRIPTION = "EXTRA_RECIPE_DESCRIPTION";
@@ -47,24 +37,22 @@ public class AddRecipeActivity extends AppCompatActivity {
     public static final int IMAGE_REQUEST = 100;
     public static final int CAMERA_REQUEST = 200;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_recipe);
+        setContentView(R.layout.activity_edit_recipe);
 
-        // Variables for each view
-        recipeNameEdt = findViewById(R.id.inputRecipe);
-        descriptionEdt = findViewById(R.id.inputDescription);
-        ingredientsEdt = findViewById(R.id.inputIngredients);
-        instructionsEdt = findViewById(R.id.inputInstructions);
-        imageEdt = (ImageView) findViewById(R.id.inputImage);
+        recipeNameEdt = findViewById(R.id.editInputRecipe);
+        descriptionEdt = findViewById(R.id.editInputDescription);
+        ingredientsEdt = findViewById(R.id.editInputIngredients);
+        instructionsEdt = findViewById(R.id.editInputInstructions);
+        imageEdt = (ImageView) findViewById(R.id.editInputImage);
 
-        addRecipeBtn = findViewById(R.id.addRecipe);
-        takePhotoBtn = findViewById(R.id.takePhoto);
-        pickPhotoBtn = findViewById(R.id.pickPhoto);
+        editAddRecipeBtn = findViewById(R.id.editAddRecipe);
+        editTakePhotoBtn = findViewById(R.id.editTakePhoto);
+        editPickPhotoBtn = findViewById(R.id.editPickPhoto);
 
-
-        // Getting data via an intent
         Intent intent = getIntent();
         if (intent.hasExtra(AddRecipeActivity.EXTRA_ID)) {
             // if we get id for our data then we are
@@ -74,14 +62,14 @@ public class AddRecipeActivity extends AppCompatActivity {
             ingredientsEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_INGREDIENTS));
             instructionsEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS));
 
-            String imageLink = intent.getStringExtra(AddRecipeActivity.EXTRA_IMAGELINK);
-            String imageChanged = stringToPath(imageLink);
+            String imageLinkExtra = intent.getStringExtra(AddRecipeActivity.EXTRA_IMAGELINK);
+            imageLink = imageLinkExtra;
+            String imageChanged = stringToPath(imageLinkExtra);
             Drawable image = Drawable.createFromPath(imageChanged);
             imageEdt.setImageDrawable(image);
         }
 
-
-        addRecipeBtn.setOnClickListener(new View.OnClickListener() {
+        editAddRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // getting text value from edittext and validating if
@@ -93,11 +81,11 @@ public class AddRecipeActivity extends AppCompatActivity {
                 String image = imageLink;
                 Log.d("Debug", "" + image);
                 if (recipeName.isEmpty() || description.isEmpty() || ingredients.isEmpty() || instructions.isEmpty() ) {
-                    Toast.makeText(AddRecipeActivity.this, "Please enter value in all fields.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditRecipeActivity.this, "Please enter value in all fields.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (image.isEmpty()) {
-                    Toast.makeText(AddRecipeActivity.this, "Please insert an image.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditRecipeActivity.this, "Please insert an image.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // Calling a method to save recipe
@@ -108,14 +96,14 @@ public class AddRecipeActivity extends AppCompatActivity {
         });
 
 
-        pickPhotoBtn.setOnClickListener(new View.OnClickListener() {
+        editPickPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openGallery();
             }
         });
 
-        takePhotoBtn.setOnClickListener(new View.OnClickListener() {
+        editTakePhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 takePhoto();
@@ -166,6 +154,8 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         // at last we are setting result as data.
         setResult(RESULT_OK, data);
+        // Toast Message Displayed
+        Toast.makeText(this, "Recipe Added to Database.", Toast.LENGTH_SHORT).show();
     }
 
     private void storeImageInDirectory(Uri imageURI) throws IOException {
@@ -204,12 +194,12 @@ public class AddRecipeActivity extends AppCompatActivity {
     private void bitmapToURI (Bitmap imageBitmap) {
         File tempFile = new File(getCacheDir(), "temp.jpeg");
         try {
-                FileOutputStream fos = new FileOutputStream(tempFile);
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                fos.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            FileOutputStream fos = new FileOutputStream(tempFile);
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         Uri uri = Uri.fromFile(tempFile);
         imageLink = uri.toString();
         try {
@@ -217,7 +207,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-}
+    }
 
 
     @Override
@@ -247,4 +237,5 @@ public class AddRecipeActivity extends AppCompatActivity {
         }
         // End reference
     }
+
 }
