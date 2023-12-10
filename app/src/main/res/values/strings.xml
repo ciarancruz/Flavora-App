@@ -2,9 +2,8 @@
     <string name="app_name">Flavora</string>
 
     <string-array name="measurements">
-        <item>Cup</item>
-        <item>Tablespoon</item>
-        <item>Teaspoon</item>
+        <item>Fahrenheit</item>
+        <item>Celsius</item>
         <item>Grams</item>
         <item>Kilogrammes</item>
         <item>Millilitres</item>

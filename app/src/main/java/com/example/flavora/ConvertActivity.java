@@ -98,6 +98,7 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
         }
     }
 
+    // Overrides for the first spinner measurement
     class Measurement1 implements AdapterView.OnItemSelectedListener
     {
         @Override
@@ -113,6 +114,7 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
         }
     }
 
+    // Overrides for the second spinner measurement
     class Measurement2 implements AdapterView.OnItemSelectedListener
     {
         public void onItemSelected(AdapterView<?> parent, View v, int position, long id)

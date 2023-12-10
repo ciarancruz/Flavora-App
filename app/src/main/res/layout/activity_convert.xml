@@ -71,6 +71,24 @@
             android:layout_marginLeft="40dp"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Convert"
+            android:backgroundTint="@color/navy_blue"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+
+
 
 
 
