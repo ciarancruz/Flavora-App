@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Flavora</string>
 
+    <string-array name="measurements">
+        <item>Fahrenheit</item>
+        <item>Celsius</item>
+        <item>Grams</item>
+        <item>Kilogrammes</item>
+        <item>Millilitres</item>
+        <item>Litres</item>
+    </string-array>
+
 </resources>
