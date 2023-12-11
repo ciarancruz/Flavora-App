@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+// ROOM Code from GeeksForGeeks (MSD Lab 6)
+
 public class RVARecipe extends ListAdapter<RecipeModel, RVARecipe.ViewHolder> {
 
     private static OnItemClickListener listener;

@@ -9,6 +9,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+// ROOM Code from GeeksForGeeks (MSD Lab 6)
+
 // adding annotation for our database entities and db version.
 @Database(entities = {RecipeModel.class}, version = 1)
 public abstract class RecipeDatabase extends RoomDatabase {
