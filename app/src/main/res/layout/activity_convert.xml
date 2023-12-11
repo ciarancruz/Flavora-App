@@ -59,7 +59,7 @@
 
         <TextView
             android:id="@+id/measurement2"
-            android:text="1.2222"
+            android:text="0"
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -79,6 +79,7 @@
         android:layout_marginTop="40dp">
 
         <Button
+            android:id="@+id/convertButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

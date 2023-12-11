@@ -10,7 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,6 +23,10 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
     // Variables
     private static final int ADD_RECIPE_REQUEST = 1;
     private ViewModal viewmodal;
+    private String measurement1, measurement2;
+    private Button convertBtn;
+    private EditText measurement1ET;
+    private TextView measurement2TV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +36,10 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
         viewmodal = new ViewModelProvider(this).get(ViewModal.class);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_convert);
+
+        convertBtn = findViewById(R.id.convertButton);
+        measurement1ET = findViewById(R.id.measurement1);
+        measurement2TV = findViewById(R.id.measurement2);
 
 
         // Navigation bar
@@ -71,7 +82,61 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
         spinner2.setOnItemSelectedListener(new Measurement2());
 
 
+        //Convert Button
+        convertBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (measurement1.equals("Fahrenheit") && measurement2.equals("Celsius")) {
+                    fahrenheitCelsius(0);
+                }
+                else if (measurement1.equals("Celsius") && measurement2.equals("Fahrenheit")){
+                    fahrenheitCelsius(1);
+                }
 
+                else if ((measurement1.equals("Grams") && measurement2.equals("Kilogrammes")) || (measurement1.equals("Millilitres") && measurement2.equals("Litres"))) {
+                    litresAndKilogrammes(0);
+                }
+                else if ((measurement1.equals("Kilogrammes") && measurement2.equals("Grams")) || (measurement1.equals("Litres") && measurement2.equals("Millilitres"))){
+                    litresAndKilogrammes(1);
+                }
+                else {
+                    Toast.makeText(ConvertActivity.this, "Conversion not possible", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    // Fahrenheit and Celsius Conversion
+    public void fahrenheitCelsius(int whichWay) { // 0 is fahrenheit to celsius and 1 is celsius to fahrenheit
+
+        String value = measurement1ET.getText().toString();
+        float valueAsFloat = Float.parseFloat(value);
+
+        if (whichWay == 0) { // Fahrenheit to Celsius
+            Float result = ((valueAsFloat - 32) * 5)/9;
+            measurement2TV.setText(result.toString());
+        }
+        else if (whichWay == 1) { // Celsius to Fahrenheit
+            Float result = ((valueAsFloat * 9) / 5) + 32;
+            measurement2TV.setText(result.toString());
+        }
+    }
+
+    // Millilitres and Litres Conversion (Can be used by grams and kilogrammes too)
+    public void litresAndKilogrammes(int whichWay) { // 0 is millilitres to litres and 1 is litres to millilitres
+
+        String value = measurement1ET.getText().toString();
+        float valueAsFloat = Float.parseFloat(value);
+
+        if (whichWay == 0) { // Gram to kilogram || Millilitres to litres
+            Float result = (valueAsFloat / 1000);
+            measurement2TV.setText(result.toString());
+        }
+        else if (whichWay == 1) { // Kilogram to gram || Litres to millilitres
+            Float result = valueAsFloat * 1000;
+            measurement2TV.setText(result.toString());
+        }
     }
 
     // Passing result from addrecipe to main recipe
@@ -104,8 +169,7 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
         @Override
         public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
         {
-            String text = parent.getItemAtPosition(position).toString();
-            Toast.makeText(ConvertActivity.this, "Measurement1 selected" + text, Toast.LENGTH_SHORT).show();
+            measurement1 = parent.getItemAtPosition(position).toString();
         }
 
         @Override
@@ -119,8 +183,7 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
     {
         public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
         {
-            String text = parent.getItemAtPosition(position).toString();
-            Toast.makeText(ConvertActivity.this, "Measurement2 selected" + text, Toast.LENGTH_SHORT).show();
+            measurement2 = parent.getItemAtPosition(position).toString();
         }
 
         @Override
