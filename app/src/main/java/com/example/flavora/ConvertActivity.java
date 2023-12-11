@@ -86,11 +86,6 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
                 return true;
-            } else if (itemId == R.id.bottom_recipes) {
-                startActivity(new Intent(getApplicationContext(), RecipesActivity.class));
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
-                return true;
             } else if (itemId == R.id.bottom_addRecipe) {
                 Intent intent = new Intent(ConvertActivity.this, AddRecipeActivity.class);
                 addRecipeLauncher.launch(intent);

@@ -30,8 +30,9 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
-        android:textSize="40sp"
-        android:text="Hello User!" />
+        android:textSize="30sp"
+        android:textColor="@color/white"
+        android:text="Here are your recipes,"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecipes"
