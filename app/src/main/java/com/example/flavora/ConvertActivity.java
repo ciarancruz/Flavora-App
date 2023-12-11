@@ -1,5 +1,9 @@
 package com.example.flavora;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,6 +31,38 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
     private Button convertBtn;
     private EditText measurement1ET;
     private TextView measurement2TV;
+
+    // Add Recipe Activity Result Launcher
+    ActivityResultLauncher<Intent> addRecipeLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult activityResult) {
+                            int resultCode = activityResult.getResultCode();
+                            Intent data = activityResult.getData();
+
+                            if (resultCode == RESULT_OK) {
+                                String recipeName = data.getStringExtra(AddRecipeActivity.EXTRA_RECIPE_NAME);
+                                String recipeDescription = data.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION);
+                                String recipeIngredients = data.getStringExtra(AddRecipeActivity.EXTRA_INGREDIENTS);
+                                String recipeInstructions = data.getStringExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS);
+                                String recipeImage = data.getStringExtra(AddRecipeActivity.EXTRA_IMAGELINK);
+                                RecipeModel model = new RecipeModel(recipeName, recipeDescription, recipeIngredients, recipeInstructions, recipeImage);
+                                viewmodal.insert(model);
+                                Toast.makeText(ConvertActivity.this, "Recipe saved", Toast.LENGTH_SHORT).show();
+
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                finish();
+                            }
+                            else {
+                                Toast.makeText(ConvertActivity.this, "Recipe not saved", Toast.LENGTH_SHORT).show();
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                            }
+                        }
+                    }
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +93,7 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
                 return true;
             } else if (itemId == R.id.bottom_addRecipe) {
                 Intent intent = new Intent(ConvertActivity.this, AddRecipeActivity.class);
-                startActivityForResult(intent, ADD_RECIPE_REQUEST);
+                addRecipeLauncher.launch(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
             } else if (itemId == R.id.bottom_convert) {
@@ -136,30 +172,6 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
         else if (whichWay == 1) { // Kilogram to gram || Litres to millilitres
             Float result = valueAsFloat * 1000;
             measurement2TV.setText(result.toString());
-        }
-    }
-
-    // Passing result from addrecipe to main recipe
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            String recipeName = data.getStringExtra(AddRecipeActivity.EXTRA_RECIPE_NAME);
-            String recipeDescription = data.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION);
-            String recipeIngredients = data.getStringExtra(AddRecipeActivity.EXTRA_INGREDIENTS);
-            String recipeInstructions = data.getStringExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS);
-            String recipeImage = data.getStringExtra(AddRecipeActivity.EXTRA_IMAGELINK);
-            RecipeModel model = new RecipeModel(recipeName, recipeDescription, recipeIngredients, recipeInstructions, recipeImage);
-            viewmodal.insert(model);
-            Toast.makeText(this, "Recipe saved", Toast.LENGTH_SHORT).show();
-
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            finish();
-        }
-        else {
-            Toast.makeText(this, "Recipe not saved", Toast.LENGTH_SHORT).show();
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
     }
 
