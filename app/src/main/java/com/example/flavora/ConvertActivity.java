@@ -25,7 +25,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class ConvertActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Variables
-    private static final int ADD_RECIPE_REQUEST = 1;
     private ViewModal viewmodal;
     private String measurement1, measurement2;
     private Button convertBtn;
@@ -57,7 +56,6 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
                                 finish();
                             }
                             else {
-                                Toast.makeText(ConvertActivity.this, "Recipe not saved", Toast.LENGTH_SHORT).show();
                                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             }
                         }

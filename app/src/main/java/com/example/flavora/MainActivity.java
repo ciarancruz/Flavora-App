@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
                                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             }
                             else {
-                                Toast.makeText(MainActivity.this, "No changes made", Toast.LENGTH_SHORT).show();
                                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             }
                         }
@@ -88,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
                                 viewmodal.insert(model);
                                 Toast.makeText(MainActivity.this, "Recipe saved", Toast.LENGTH_SHORT).show();
 
+                            }
+                            else {
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             }
                         }
                     }
@@ -148,10 +150,10 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
 
+            // Swiping on an item deletes it from database
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                // on recycler view item swiped then we are deleting the item of our recycler view.
-                viewmodal.delete(adapter.getRecipeAt(viewHolder.getAdapterPosition()));
+                viewmodal.delete(adapter.getRecipeAt(viewHolder.getBindingAdapterPosition()));
                 Toast.makeText(MainActivity.this, "Recipe deleted", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recipesRV);
@@ -160,9 +162,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new RVARecipe.OnItemClickListener() {
             @Override
             public void onItemClick(RecipeModel model) {
-                // after clicking on item of recycler view
-                // we are opening a new activity and passing
-                // a data to our activity.
+                // Passing data to new edit activity
                 Intent intent = new Intent(MainActivity.this, EditRecipeActivity.class);
                 intent.putExtra(AddRecipeActivity.EXTRA_ID, model.getId());
                 intent.putExtra(AddRecipeActivity.EXTRA_RECIPE_NAME, model.getRecipeName());
@@ -171,8 +171,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS, model.getInstructions());
                 intent.putExtra(AddRecipeActivity.EXTRA_IMAGELINK, model.getImageLink());
 
-                // below line is to start a new activity and
-                // adding a edit course constant.
                 editRecipeLauncher.launch(intent);
             }
         });

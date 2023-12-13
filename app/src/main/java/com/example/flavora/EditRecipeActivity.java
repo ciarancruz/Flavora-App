@@ -11,21 +11,25 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class EditRecipeActivity extends AppCompatActivity {
+public class EditRecipeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private EditText recipeNameEdt, descriptionEdt, ingredientsEdt, instructionsEdt;
     private ImageView imageEdt;
     private Button editAddRecipeBtn, editTakePhotoBtn, editPickPhotoBtn;
     private String imageLink;
+    private String editDescriptionInput;
 
     public static final String EXTRA_ID = "EXTRA_ID";
     public static final String EXTRA_RECIPE_NAME = "EXTRA_RECIPE";
@@ -43,8 +47,14 @@ public class EditRecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recipe);
 
+        //Spinner Dropdown
+        Spinner descriptionEdt = findViewById(R.id.editInputDescription);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.description, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        descriptionEdt.setAdapter(adapter);
+        descriptionEdt.setOnItemSelectedListener(this);
+
         recipeNameEdt = findViewById(R.id.editInputRecipe);
-        descriptionEdt = findViewById(R.id.editInputDescription);
         ingredientsEdt = findViewById(R.id.editInputIngredients);
         instructionsEdt = findViewById(R.id.editInputInstructions);
         imageEdt = (ImageView) findViewById(R.id.editInputImage);
@@ -58,7 +68,11 @@ public class EditRecipeActivity extends AppCompatActivity {
             // if we get id for our data then we are
             // setting values to our edit text fields.
             recipeNameEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_RECIPE_NAME));
-            descriptionEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION));
+
+            ArrayAdapter myAdapter = (ArrayAdapter) descriptionEdt.getAdapter();
+            int spinnerPosition = myAdapter.getPosition(intent.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION));
+            descriptionEdt.setSelection(spinnerPosition);
+
             ingredientsEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_INGREDIENTS));
             instructionsEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS));
 
@@ -75,7 +89,7 @@ public class EditRecipeActivity extends AppCompatActivity {
                 // getting text value from edittext and validating if
                 // the text fields are empty or not.
                 String recipeName = recipeNameEdt.getText().toString();
-                String description = descriptionEdt.getText().toString();
+                String description = editDescriptionInput;
                 String ingredients = ingredientsEdt.getText().toString();
                 String instructions = instructionsEdt.getText().toString();
                 String image = imageLink;
@@ -238,4 +252,13 @@ public class EditRecipeActivity extends AppCompatActivity {
         // End reference
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        editDescriptionInput = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

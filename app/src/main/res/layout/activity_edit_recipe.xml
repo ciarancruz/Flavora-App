@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Edit Recipe"
+            android:text="View/Edit Recipe"
             android:textSize="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -32,18 +32,9 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="30dp"/>
 
-        <EditText
-            android:layout_below="@+id/editInputRecipe"
-            android:id="@+id/editInputDescription"
-            android:hint="Description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"/>
 
         <EditText
-            android:layout_below="@+id/editInputDescription"
+            android:layout_below="@+id/editInputRecipe"
             android:id="@+id/editInputIngredients"
             android:hint="Ingredients"
             android:layout_width="match_parent"
@@ -62,13 +53,23 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"/>
 
+        <Spinner
+            android:layout_below="@id/editInputInstructions"
+            android:id="@+id/editInputDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            />
+
         <LinearLayout
             android:id="@+id/editPhotoButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@id/editInputInstructions"
-            android:layout_marginTop="10dp"
+            android:layout_below="@id/editInputDescription"
+            android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true">
 
             <Button
