@@ -11,29 +11,25 @@ import java.util.List;
 @androidx.room.Dao
 public interface Dao {
 
-    // below method is use to
-    // add data to database.
+    // ROOM Code from GeeksForGeeks (MSD Lab 6)
+
+    // Add data to the database
     @Insert
     void insert(RecipeModel model);
 
-    // below method is use to update
-    // the data in our database.
+    // Update data in the database
     @Update
     void update(RecipeModel model);
 
-    // below line is use to delete a
-    // specific course in our database.
+    // Delete data from the database
     @Delete
     void delete(RecipeModel model);
 
-    // on below line we are making query to
-    // delete all courses from our database.
+    // Query to delete all recipes from database
     @Query("DELETE FROM recipe")
     void deleteAllRecipes();
 
-    // below line is to read all the courses from our database.
-    // in this we are ordering our courses in ascending order
-    // with our course name.
+    // Query all data from our database in ascending order
     @Query("SELECT * FROM recipe ORDER BY recipeName ASC")
     LiveData<List<RecipeModel>> getAllRecipes();
 }

@@ -4,7 +4,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-
+// ROOM Code from GeeksForGeeks (MSD Lab 6)
 
 @Entity(tableName = "recipe")
 public class RecipeModel {

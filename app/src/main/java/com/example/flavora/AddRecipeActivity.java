@@ -1,5 +1,9 @@
 package com.example.flavora;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,9 +18,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,15 +33,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.concurrent.ExecutionException;
 
-public class AddRecipeActivity extends AppCompatActivity {
+public class AddRecipeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Variables for input
-    private EditText recipeNameEdt, descriptionEdt, ingredientsEdt, instructionsEdt;
+    private EditText recipeNameEdt, ingredientsEdt, instructionsEdt;
     private ImageView imageEdt;
     private Button addRecipeBtn, takePhotoBtn, pickPhotoBtn;
     private String imageLink = "", cameraLink;
+    private String descriptionInput;
 
     // GeekForGeeks Code (MSD Lab 6)
     public static final String EXTRA_ID = "EXTRA_ID";
@@ -44,17 +53,70 @@ public class AddRecipeActivity extends AppCompatActivity {
     public static final String EXTRA_INSTRUCTIONS = "EXTRA_INSTRUCTIONS";
     public static final String EXTRA_IMAGELINK = "EXTRA_IMAGELINK";
 
-    public static final int IMAGE_REQUEST = 100;
-    public static final int CAMERA_REQUEST = 200;
+    // Request Camera
+    ActivityResultLauncher<Intent> cameraRequestLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult activityResult) {
+                            int resultCode = activityResult.getResultCode();
+                            Intent data = activityResult.getData();
+
+                            // Reference: https://developer.android.com/training/camera-deprecated/photobasics
+                            if (resultCode == RESULT_OK) {
+                                Bundle extras = data.getExtras();
+                                Bitmap image = (Bitmap)extras.get("data");
+                                Log.d("Debug", "Image link/path" + image);
+                                imageEdt.setImageBitmap(image);
+                                bitmapToURI(image);
+
+                            }
+                            // End reference
+                        }
+                    }
+            );
+
+    // Open gallery
+    ActivityResultLauncher<Intent> openGalleryLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult activityResult) {
+                            int resultCode = activityResult.getResultCode();
+                            Intent data = activityResult.getData();
+
+                            if (resultCode == RESULT_OK) {
+                                Uri selectedImage = data.getData();
+                                imageLink = selectedImage.toString();
+                                imageEdt.setImageURI(selectedImage);
+                                try {
+                                    storeImageInDirectory(selectedImage);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+
+                            }
+                        }
+                    }
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_recipe);
 
+        //Spinner Dropdown
+        Spinner descriptionEdt = findViewById(R.id.inputDescription);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.description, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        descriptionEdt.setAdapter(adapter);
+        descriptionEdt.setOnItemSelectedListener(this);
+
+
         // Variables for each view
         recipeNameEdt = findViewById(R.id.inputRecipe);
-        descriptionEdt = findViewById(R.id.inputDescription);
         ingredientsEdt = findViewById(R.id.inputIngredients);
         instructionsEdt = findViewById(R.id.inputInstructions);
         imageEdt = (ImageView) findViewById(R.id.inputImage);
@@ -67,10 +129,12 @@ public class AddRecipeActivity extends AppCompatActivity {
         // Getting data via an intent
         Intent intent = getIntent();
         if (intent.hasExtra(AddRecipeActivity.EXTRA_ID)) {
-            // if we get id for our data then we are
-            // setting values to our edit text fields.
             recipeNameEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_RECIPE_NAME));
-            descriptionEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION));
+
+            // Getting text value of the dropdown selected item
+            ArrayAdapter myAdapter = (ArrayAdapter) descriptionEdt.getAdapter();
+            int spinnerPosition = myAdapter.getPosition(intent.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION));
+            descriptionEdt.setSelection(spinnerPosition);
             ingredientsEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_INGREDIENTS));
             instructionsEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_INSTRUCTIONS));
 
@@ -87,7 +151,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                 // getting text value from edittext and validating if
                 // the text fields are empty or not.
                 String recipeName = recipeNameEdt.getText().toString();
-                String description = descriptionEdt.getText().toString();
+                String description = descriptionInput;
                 String ingredients = ingredientsEdt.getText().toString();
                 String instructions = instructionsEdt.getText().toString();
                 String image = imageLink;
@@ -100,7 +164,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                     Toast.makeText(AddRecipeActivity.this, "Please insert an image.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                // Calling a method to save recipe
+
                 saveRecipe(recipeName, description, ingredients, instructions, image);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
@@ -131,28 +195,25 @@ public class AddRecipeActivity extends AppCompatActivity {
         return link;
     }
 
-    // Taking a photo
+    // Taking a photo Reference: https://developer.android.com/training/camera-deprecated/photobasics
     public void takePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, CAMERA_REQUEST);
+            cameraRequestLauncher.launch(intent);
         }
     }
 
-    // Picking a photo from gallery
+    // Picking a photo from gallery https://developer.android.com/training/data-storage/shared/documents-files
     public void openGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST);
+        openGalleryLauncher.launch(Intent.createChooser(intent, "Select Picture"));
     }
 
     private void saveRecipe(String recipeName, String description, String ingredients, String instructions, String image) {
-        // inside this method we are passing
-        // all the data via an intent.
         Intent data = new Intent();
 
-        // in below line we are passing all our course detail.
         data.putExtra(EXTRA_RECIPE_NAME, recipeName);
         data.putExtra(EXTRA_DESCRIPTION, description);
         data.putExtra(EXTRA_INGREDIENTS, ingredients);
@@ -160,7 +221,6 @@ public class AddRecipeActivity extends AppCompatActivity {
         data.putExtra(EXTRA_IMAGELINK, image);
         int id = getIntent().getIntExtra(EXTRA_ID, -1);
         if (id != -1) {
-            // in below line we are passing our id.
             data.putExtra(EXTRA_ID, id);
         }
 
@@ -168,6 +228,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         setResult(RESULT_OK, data);
     }
 
+    // Storing image in a directory for future use
     private void storeImageInDirectory(Uri imageURI) throws IOException {
         // Find root folder
         String root = getApplication().getExternalFilesDir("").getAbsolutePath();
@@ -201,6 +262,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         out.close();
     }
 
+    // Convert a bitmap file to URI. Reference: https://stackoverflow.com/questions/8295773/how-can-i-transform-a-bitmap-into-a-uri
     private void bitmapToURI (Bitmap imageBitmap) {
         File tempFile = new File(getCacheDir(), "temp.jpeg");
         try {
@@ -219,32 +281,14 @@ public class AddRecipeActivity extends AppCompatActivity {
         }
 }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        descriptionInput = parent.getItemAtPosition(position).toString();
+    }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK) {
-            Uri selectedImage = data.getData();
-            imageLink = selectedImage.toString();
-            Log.d("Debug", "Image link saved " + imageLink);
-            imageEdt.setImageURI(selectedImage);
-            try {
-                storeImageInDirectory(selectedImage);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+    public void onNothingSelected(AdapterView<?> parent) {
 
-        }
-
-        // Reference: https://developer.android.com/training/camera-deprecated/photobasics
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap image = (Bitmap)extras.get("data");
-            Log.d("Debug", "Image link/path" + image);
-            imageEdt.setImageBitmap(image);
-            bitmapToURI(image);
-
-        }
-        // End reference
     }
+
 }

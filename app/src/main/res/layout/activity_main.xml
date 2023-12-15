@@ -21,22 +21,32 @@
         app:itemActiveIndicatorStyle="@color/white"
         app:labelVisibilityMode="unlabeled"/>
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:textSize="40sp"
-        android:text="Hello User!" />
+        android:id="@+id/linearlayout1">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:text="Here are your recipes,"/>
+
+
+    </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/rvRecipes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottomNavigationView"
-        android:layout_below="@+id/textView"/>
+        android:layout_below="@+id/linearlayout1"/>
 </RelativeLayout>

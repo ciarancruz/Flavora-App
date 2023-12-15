@@ -10,4 +10,14 @@
         <item>Litres</item>
     </string-array>
 
+    <string-array name="description">
+        <item>American</item>
+        <item>Italian</item>
+        <item>Irish</item>
+        <item>Filipino</item>
+        <item>Korean</item>
+        <item>French</item>
+        <item>British</item>
+    </string-array>
+
 </resources>

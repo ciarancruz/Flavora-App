@@ -9,29 +9,22 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-// adding annotation for our database entities and db version.
+// ROOM Code from GeeksForGeeks (MSD Lab 6)
+
+
 @Database(entities = {RecipeModel.class}, version = 1)
 public abstract class RecipeDatabase extends RoomDatabase {
 
-    // below line is to create instance
-    // for our database class.
+    // Create instance for database class
     private static RecipeDatabase instance;
 
-    // below line is to create
-    // abstract variable for dao.
     public abstract Dao Dao();
 
-    // on below line we are getting instance for our database.
+    // Get instance of database
     public static synchronized RecipeDatabase getInstance(Context context) {
-        // below line is to check if
-        // the instance is null or not.
         if (instance == null) {
-            // if the instance is null we
-            // are creating a new instance
+            // Create new instance
             instance =
-                    // for creating a instance for our database
-                    // we are creating a database builder and passing
-                    // our database class with our database name.
                     Room.databaseBuilder(context.getApplicationContext(),
                                     RecipeDatabase.class, "recipe_database")
                             // below line is use to add fall back to

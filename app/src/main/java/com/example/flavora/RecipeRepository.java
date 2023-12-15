@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 
+// ROOM Code from GeeksForGeeks (MSD Lab 6)
 public class RecipeRepository {
     // below line is the create a variable
     // for dao and list for all courses.
@@ -97,7 +98,7 @@ public class RecipeRepository {
         }
     }
 
-    // we are creating a async task method to delete all courses.
+    // Delete all recipes
     private static class DeleteAllRecipesAsyncTask extends AsyncTask<Void, Void, Void> {
         private Dao dao;
         private DeleteAllRecipesAsyncTask(Dao dao) {
@@ -105,8 +106,7 @@ public class RecipeRepository {
         }
         @Override
         protected Void doInBackground(Void... voids) {
-            // on below line calling method
-            // to delete all courses.
+
             dao.deleteAllRecipes();
             return null;
         }
