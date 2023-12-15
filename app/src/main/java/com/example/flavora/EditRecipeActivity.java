@@ -1,5 +1,9 @@
 package com.example.flavora;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,9 +42,55 @@ public class EditRecipeActivity extends AppCompatActivity implements AdapterView
     public static final String EXTRA_INSTRUCTIONS = "EXTRA_INSTRUCTIONS";
     public static final String EXTRA_IMAGELINK = "EXTRA_IMAGELINK";
 
-    public static final int IMAGE_REQUEST = 100;
-    public static final int CAMERA_REQUEST = 200;
 
+    // Request Camera
+    ActivityResultLauncher<Intent> cameraRequestLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult activityResult) {
+                            int resultCode = activityResult.getResultCode();
+                            Intent data = activityResult.getData();
+
+                            // Reference: https://developer.android.com/training/camera-deprecated/photobasics
+                            if (resultCode == RESULT_OK) {
+                                Bundle extras = data.getExtras();
+                                Bitmap image = (Bitmap)extras.get("data");
+                                Log.d("Debug", "Image link/path" + image);
+                                imageEdt.setImageBitmap(image);
+                                bitmapToURI(image);
+
+                            }
+                            // End reference
+                        }
+                    }
+            );
+
+    // Open gallery
+    ActivityResultLauncher<Intent> openGalleryLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult activityResult) {
+                            int resultCode = activityResult.getResultCode();
+                            Intent data = activityResult.getData();
+
+                            if (resultCode == RESULT_OK) {
+                                Uri selectedImage = data.getData();
+                                imageLink = selectedImage.toString();
+                                imageEdt.setImageURI(selectedImage);
+                                try {
+                                    storeImageInDirectory(selectedImage);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+
+                            }
+                        }
+                    }
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +187,7 @@ public class EditRecipeActivity extends AppCompatActivity implements AdapterView
     public void takePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, CAMERA_REQUEST);
+            cameraRequestLauncher.launch(intent);
         }
     }
 
@@ -146,7 +196,7 @@ public class EditRecipeActivity extends AppCompatActivity implements AdapterView
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST);
+        openGalleryLauncher.launch(intent);
     }
 
     private void saveRecipe(String recipeName, String description, String ingredients, String instructions, String image) {
@@ -222,33 +272,6 @@ public class EditRecipeActivity extends AppCompatActivity implements AdapterView
         }
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK) {
-            Uri selectedImage = data.getData();
-            imageLink = selectedImage.toString();
-            Log.d("Debug", "Image link saved " + imageLink);
-            imageEdt.setImageURI(selectedImage);
-            try {
-                storeImageInDirectory(selectedImage);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-
-        // Reference: https://developer.android.com/training/camera-deprecated/photobasics
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap image = (Bitmap)extras.get("data");
-            Log.d("Debug", "Image link/path" + image);
-            imageEdt.setImageBitmap(image);
-            bitmapToURI(image);
-
-        }
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
