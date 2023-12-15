@@ -32,15 +32,6 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="30dp"/>
 
-<!--        <EditText-->
-<!--            android:layout_below="@+id/inputRecipe"-->
-<!--            android:id="@+id/inputDescription"-->
-<!--            android:hint="Description"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="20dp"-->
-<!--            android:layout_marginRight="20dp"-->
-<!--            android:layout_marginTop="10dp"/>-->
         <Spinner
             android:layout_below="@id/inputInstructions"
             android:id="@+id/inputDescription"

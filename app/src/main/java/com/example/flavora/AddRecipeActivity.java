@@ -53,9 +53,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
     public static final String EXTRA_INSTRUCTIONS = "EXTRA_INSTRUCTIONS";
     public static final String EXTRA_IMAGELINK = "EXTRA_IMAGELINK";
 
-    public static final int IMAGE_REQUEST = 100;
-    public static final int CAMERA_REQUEST = 200;
-
+    // Request Camera
     ActivityResultLauncher<Intent> cameraRequestLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
@@ -79,6 +77,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                     }
             );
 
+    // Open gallery
     ActivityResultLauncher<Intent> openGalleryLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
@@ -130,10 +129,9 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         // Getting data via an intent
         Intent intent = getIntent();
         if (intent.hasExtra(AddRecipeActivity.EXTRA_ID)) {
-            // if we get id for our data then we are
-            // setting values to our edit text fields.
             recipeNameEdt.setText(intent.getStringExtra(AddRecipeActivity.EXTRA_RECIPE_NAME));
 
+            // Getting text value of the dropdown selected item
             ArrayAdapter myAdapter = (ArrayAdapter) descriptionEdt.getAdapter();
             int spinnerPosition = myAdapter.getPosition(intent.getStringExtra(AddRecipeActivity.EXTRA_DESCRIPTION));
             descriptionEdt.setSelection(spinnerPosition);
@@ -166,7 +164,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
                     Toast.makeText(AddRecipeActivity.this, "Please insert an image.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                // Calling a method to save recipe
+
                 saveRecipe(recipeName, description, ingredients, instructions, image);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
@@ -188,8 +186,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
             }
         });
 
-
-
     }
 
     public String stringToPath(String imageLink) {
@@ -199,7 +195,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         return link;
     }
 
-    // Taking a photo
+    // Taking a photo Reference: https://developer.android.com/training/camera-deprecated/photobasics
     public void takePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getPackageManager()) != null) {
@@ -207,7 +203,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
-    // Picking a photo from gallery
+    // Picking a photo from gallery https://developer.android.com/training/data-storage/shared/documents-files
     public void openGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -218,7 +214,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
     private void saveRecipe(String recipeName, String description, String ingredients, String instructions, String image) {
         Intent data = new Intent();
 
-        // in below line we are passing all our course detail.
         data.putExtra(EXTRA_RECIPE_NAME, recipeName);
         data.putExtra(EXTRA_DESCRIPTION, description);
         data.putExtra(EXTRA_INGREDIENTS, ingredients);
@@ -226,7 +221,6 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         data.putExtra(EXTRA_IMAGELINK, image);
         int id = getIntent().getIntExtra(EXTRA_ID, -1);
         if (id != -1) {
-            // in below line we are passing our id.
             data.putExtra(EXTRA_ID, id);
         }
 
@@ -234,6 +228,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         setResult(RESULT_OK, data);
     }
 
+    // Storing image in a directory for future use
     private void storeImageInDirectory(Uri imageURI) throws IOException {
         // Find root folder
         String root = getApplication().getExternalFilesDir("").getAbsolutePath();
@@ -267,6 +262,7 @@ public class AddRecipeActivity extends AppCompatActivity implements AdapterView.
         out.close();
     }
 
+    // Convert a bitmap file to URI. Reference: https://stackoverflow.com/questions/8295773/how-can-i-transform-a-bitmap-into-a-uri
     private void bitmapToURI (Bitmap imageBitmap) {
         File tempFile = new File(getCacheDir(), "temp.jpeg");
         try {

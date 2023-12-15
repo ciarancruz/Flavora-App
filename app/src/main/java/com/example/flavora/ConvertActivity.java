@@ -115,6 +115,7 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
         convertBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Fahrenheit and Celsius
                 if (measurement1.equals("Fahrenheit") && measurement2.equals("Celsius")) {
                     fahrenheitCelsius(0);
                 }
@@ -122,6 +123,7 @@ public class ConvertActivity extends AppCompatActivity implements AdapterView.On
                     fahrenheitCelsius(1);
                 }
 
+                // Grams and Kilogrammes || Millilitres and Litres
                 else if ((measurement1.equals("Grams") && measurement2.equals("Kilogrammes")) || (measurement1.equals("Millilitres") && measurement2.equals("Litres"))) {
                     litresAndKilogrammes(0);
                 }

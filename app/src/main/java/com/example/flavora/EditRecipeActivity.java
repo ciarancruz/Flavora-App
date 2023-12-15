@@ -93,7 +93,6 @@ public class EditRecipeActivity extends AppCompatActivity implements AdapterView
                 String ingredients = ingredientsEdt.getText().toString();
                 String instructions = instructionsEdt.getText().toString();
                 String image = imageLink;
-                Log.d("Debug", "" + image);
                 if (recipeName.isEmpty() || description.isEmpty() || ingredients.isEmpty() || instructions.isEmpty() ) {
                     Toast.makeText(EditRecipeActivity.this, "Please enter value in all fields.", Toast.LENGTH_SHORT).show();
                     return;
@@ -126,6 +125,7 @@ public class EditRecipeActivity extends AppCompatActivity implements AdapterView
 
     }
 
+    // Return a path with the id (last 4 digits) of the picture to uniquely identify each picture
     public String stringToPath(String imageLink) {
         String root = getApplication().getExternalFilesDir("").getAbsolutePath();
         String id = imageLink.substring(imageLink.length() - 4 );
@@ -154,7 +154,7 @@ public class EditRecipeActivity extends AppCompatActivity implements AdapterView
         // all the data via an intent.
         Intent data = new Intent();
 
-        // in below line we are passing all our course detail.
+        // Passing all recipe details
         data.putExtra(EXTRA_RECIPE_NAME, recipeName);
         data.putExtra(EXTRA_DESCRIPTION, description);
         data.putExtra(EXTRA_INGREDIENTS, ingredients);
@@ -162,16 +162,14 @@ public class EditRecipeActivity extends AppCompatActivity implements AdapterView
         data.putExtra(EXTRA_IMAGELINK, image);
         int id = getIntent().getIntExtra(EXTRA_ID, -1);
         if (id != -1) {
-            // in below line we are passing our id.
             data.putExtra(EXTRA_ID, id);
         }
 
-        // at last we are setting result as data.
         setResult(RESULT_OK, data);
-        // Toast Message Displayed
         Toast.makeText(this, "Recipe Added to Database.", Toast.LENGTH_SHORT).show();
     }
 
+    // Store picture in "pictures" directory
     private void storeImageInDirectory(Uri imageURI) throws IOException {
         // Find root folder
         String root = getApplication().getExternalFilesDir("").getAbsolutePath();
@@ -205,6 +203,7 @@ public class EditRecipeActivity extends AppCompatActivity implements AdapterView
         out.close();
     }
 
+    // Convert a bitmap file to URI. Reference: https://stackoverflow.com/questions/8295773/how-can-i-transform-a-bitmap-into-a-uri
     private void bitmapToURI (Bitmap imageBitmap) {
         File tempFile = new File(getCacheDir(), "temp.jpeg");
         try {
@@ -249,7 +248,6 @@ public class EditRecipeActivity extends AppCompatActivity implements AdapterView
             bitmapToURI(image);
 
         }
-        // End reference
     }
 
     @Override

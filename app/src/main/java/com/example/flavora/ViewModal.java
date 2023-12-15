@@ -13,8 +13,6 @@ public class ViewModal extends AndroidViewModel{
     // creating a new variable for course repository.
     private RecipeRepository repository;
 
-    // below line is to create a variable for live
-    // data where all the courses are present.
     private LiveData<List<RecipeModel>> allRecipes;
 
     // constructor for our view modal.

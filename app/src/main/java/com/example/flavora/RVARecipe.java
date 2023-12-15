@@ -81,8 +81,6 @@ public class RVARecipe extends ListAdapter<RecipeModel, RVARecipe.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // inside on click listener we are passing
-                    // position to our item of recycler view.
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION) {
                         listener.onItemClick(getItem(position));
@@ -99,11 +97,6 @@ public class RVARecipe extends ListAdapter<RecipeModel, RVARecipe.ViewHolder> {
         this.listener = listener;
     }
 
-//    // Return the size of your dataset (invoked by the layout manager)
-//    @Override
-//    public int getItemCount() {
-//        return localDataSet.size();
-//    }
 }
 
 
